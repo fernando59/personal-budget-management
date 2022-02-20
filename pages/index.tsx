@@ -1,7 +1,9 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
+import { useSession, signIn, signOut } from "next-auth/react"
 
 const Home: NextPage = () => {
+  const { data: session } = useSession()
   return <>
     <Head>
       <title>Personal Budge</title>
@@ -9,6 +11,19 @@ const Home: NextPage = () => {
 
     </Head>
     <h1 className="text-center text-2xl font-bold">My Personal Budget Management </h1>
+    {
+      session ? <>
+        Signed in as {session?.user?.email} <br />
+        <button className='bg-red-600 text-white rounded-md p-5' onClick={() => signOut()}>Sign out</button>
+      </>
+
+
+        :
+        <>
+          Not signed in <br />
+          <button className='bg-blue-600 text-white rounded-md p-5' onClick={() => signIn()}>Sign in</button>
+        </>
+    }
 
   </>
 }
